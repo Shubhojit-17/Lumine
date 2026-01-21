@@ -4,6 +4,9 @@
 # CRITICAL: Never commit secrets
 # ==============================================
 .env
+.env.*
+.env.local
+.env.*.local
 *.key
 *_private_key*
 secrets/

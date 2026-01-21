@@ -4,9 +4,16 @@ Payment-gated API using HTTP 402 and USDCx on Stacks testnet.
 """
 
 import os
+from pathlib import Path
+from dotenv import load_dotenv
 from fastapi import FastAPI, Header, Response
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import Optional
+
+# Load .env file from project root
+env_path = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 from ..verification import TransactionVerifier, VerificationConfig, VerificationResult
 from ..verification.transaction_verifier import VerificationError
@@ -39,6 +46,16 @@ app = FastAPI(
     title="AgentPay-USDCx",
     description="Pay-per-request API using USDCx on Stacks testnet",
     version="0.1.0",
+)
+
+# CORS middleware to allow frontend requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["X-Payment-Amount", "X-Payment-Asset", "X-Payment-Recipient", "X-Payment-Network"],
 )
 
 # Verifier instance (lazy init)
