@@ -2,11 +2,11 @@
 # Install both Python and Node.js for the stacks-signer.js
 
 [phases.setup]
-nixPkgs = ["python310", "nodejs_18"]
+nixPkgs = ["python310", "python310Packages.pip", "nodejs_18"]
 
 [phases.install]
 cmds = [
-    "pip install -r requirements.txt",
+    "python -m pip install -r requirements.txt",
     "cd usdcx-bridge && npm install"
 ]
 
