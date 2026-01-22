@@ -619,7 +619,7 @@ async def demo_run():
     try:
         # Determine API base URL
         # In demo mode, we call ourselves
-        api_host = os.environ.get("AGENTPAY_API_HOST", "http://localhost:8000")
+        api_host = os.environ.get("AGENTPAY_API_HOST", "http://localhost:8000").rstrip('/')
         
         # Run demo flow in thread pool to avoid blocking the event loop
         # Use asyncio.wait_for to add a timeout
