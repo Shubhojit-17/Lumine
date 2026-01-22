@@ -53,9 +53,21 @@ app = FastAPI(
 app.include_router(demo_router)
 
 # CORS middleware to allow frontend requests
+# Get allowed origins from environment or use defaults
+cors_origins = os.environ.get("CORS_ORIGINS", "").split(",") if os.environ.get("CORS_ORIGINS") else []
+cors_origins.extend([
+    "http://localhost:3000", 
+    "http://127.0.0.1:3000", 
+    "http://localhost:5173", 
+    "http://127.0.0.1:5173",
+    "https://lumine-teal.vercel.app",  # Production frontend
+])
+# Remove empty strings
+cors_origins = [o.strip() for o in cors_origins if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
