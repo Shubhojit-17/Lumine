@@ -22,5 +22,8 @@ COPY . .
 # Expose port (Railway sets PORT env var)
 EXPOSE 8000
 
-# Start command - use shell form for variable expansion
-CMD ["sh", "-c", "uvicorn src.api.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Default port if not set
+ENV PORT=8000
+
+# Start command using ENTRYPOINT for proper variable expansion
+ENTRYPOINT ["/bin/sh", "-c", "exec uvicorn src.api.main:app --host 0.0.0.0 --port $PORT"]
