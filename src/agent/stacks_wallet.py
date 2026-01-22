@@ -295,15 +295,18 @@ def build_post_conditions_sip010(
     pc += struct.pack('>I', 1)
     
     # FungiblePostCondition
-    pc += bytes([0x01])  # PostConditionType::Fungible (standard principal)
+    pc += bytes([0x01])  # PostConditionType::Fungible
     
-    # Principal
-    version, hash160 = address_to_bytes(sender)
-    pc += bytes([version]) + hash160
+    # Principal: 0x02 = Standard principal, then version + hash160
+    sender_version, sender_hash = address_to_bytes(sender)
+    pc += bytes([0x02])  # StandardPrincipal indicator
+    pc += bytes([sender_version])  # Address version (26 for testnet)
+    pc += sender_hash  # 20 bytes hash160
     
-    # Asset info
-    asset_addr_version, asset_addr_hash = address_to_bytes(contract_address)
-    pc += bytes([asset_addr_version]) + asset_addr_hash
+    # Asset info: contract address version + hash + contract name + asset name
+    asset_version, asset_addr_hash = address_to_bytes(contract_address)
+    pc += bytes([asset_version])  # Asset contract address version
+    pc += asset_addr_hash  # Asset contract address hash160
     pc += bytes([len(contract_name)]) + contract_name.encode('ascii')
     pc += bytes([len(asset_name)]) + asset_name.encode('ascii')
     
@@ -428,20 +431,23 @@ class StacksWallet:
         # Authorization
         signer_hash = _hash160(self.public_key)
         
-        # Build auth for signing (with placeholders)
-        auth = bytes([0x04])  # Standard auth
-        auth += bytes([0x00])  # Singlesig P2PKH
-        auth += signer_hash
-        auth += nonce.to_bytes(8, 'big')
-        auth += fee.to_bytes(8, 'big')
+        # Build auth for signing (with signature placeholder for sighash)
+        # Format: auth_type(1) + hash_mode(1) + signer(20) + nonce(8) + fee(8) + key_encoding(1) + signature(65)
+        auth_presign = bytes([0x04])  # Standard auth
+        auth_presign += bytes([0x00])  # Singlesig P2PKH
+        auth_presign += signer_hash
+        auth_presign += nonce.to_bytes(8, 'big')
+        auth_presign += fee.to_bytes(8, 'big')
+        auth_presign += bytes([0x00])  # key encoding: compressed
+        auth_presign += bytes(65)  # signature placeholder (65 zero bytes)
         
         # Anchor mode and post-condition mode are part of tx body
         tx_body = bytes([ANCHOR_MODE_ANY])
         tx_body += post_conditions
         tx_body += payload
         
-        # Build sighash
-        sighash_presign = prefix + auth + tx_body
+        # Build sighash (double SHA256 of presign transaction)
+        sighash_presign = prefix + auth_presign + tx_body
         sighash = _sha256(_sha256(sighash_presign))
         
         # Sign

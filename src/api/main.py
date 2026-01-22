@@ -18,6 +18,7 @@ load_dotenv(dotenv_path=env_path)
 from ..verification import TransactionVerifier, VerificationConfig, VerificationResult
 from ..verification.transaction_verifier import VerificationError
 from .txid_store import txid_store
+from .demo import router as demo_router
 
 
 # ============================================
@@ -48,10 +49,13 @@ app = FastAPI(
     version="0.1.0",
 )
 
+# Include demo mode router
+app.include_router(demo_router)
+
 # CORS middleware to allow frontend requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -31,7 +31,11 @@ const generateSpherePoints = (count: number, r: number): Point[] => {
   return points;
 };
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  onJoin?: () => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onJoin }) => {
   const points = useMemo(() => generateSpherePoints(NUM_POINTS, RADIUS), []);
   const { scrollY } = useScroll();
   
@@ -91,12 +95,15 @@ export const Hero: React.FC = () => {
           Autonomous agents paying for the world’s APIs via USDCx on Stacks.
         </p>
 
-        <button className="glass-pill px-8 py-3 rounded-full flex items-center gap-3 hover:bg-white/10 transition-colors group cursor-pointer">
+        <button 
+          onClick={onJoin}
+          className="glass-pill px-8 py-3 rounded-full flex items-center gap-3 hover:bg-white/10 transition-colors group cursor-pointer"
+        >
           <span className="relative flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#BFFF00] opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3 w-3 bg-[#BFFF00]"></span>
           </span>
-          <span className="text-sm font-mono tracking-widest uppercase">Live Protocol</span>
+          <span className="text-sm font-mono tracking-widest uppercase">Join Protocol</span>
         </button>
       </motion.div>
 
