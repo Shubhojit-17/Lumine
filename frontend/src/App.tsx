@@ -22,7 +22,8 @@ function LandingPage() {
       {/* Navigation / Header (Minimal) */}
       <nav className="fixed top-0 left-0 w-full z-40 px-6 py-6 flex justify-between items-center mix-blend-difference">
         <div className="font-mono font-bold text-xl tracking-tighter">Lumine</div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
+          <Link to="/demo-run" className="text-sm font-mono text-white/70 hover:text-[#BFFF00] transition-colors uppercase tracking-wider">Live Protocol</Link>
           <Link to="/docs" className="text-sm font-mono text-gray-400 hover:text-white transition-colors">Docs</Link>
           <a href="https://github.com/Shubhojit-17/Lumine" target="_blank" rel="noopener noreferrer" className="text-sm font-mono text-gray-400 hover:text-white transition-colors">GitHub</a>
         </div>
