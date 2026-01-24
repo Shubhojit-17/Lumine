@@ -1,0 +1,18 @@
+{
+  "name": "@lumine/gateway",
+  "version": "0.1.0",
+  "description": "Lumine gateway SDK for API providers monetizing endpoints",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "private": true,
+  "keywords": [
+    "lumine",
+    "http-402",
+    "payment",
+    "gateway",
+    "middleware",
+    "sdk"
+  ],
+  "author": "Lumine",
+  "license": "MIT"
+}
