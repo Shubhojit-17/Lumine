@@ -1,10 +1,12 @@
 import React, { useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Section } from './Section';
 
 const NUM_NODES = 50;
 
 export const Future: React.FC = () => {
+  const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -81,7 +83,8 @@ export const Future: React.FC = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="glass-pill px-10 py-4 text-xl font-bold rounded-full bg-white/10 hover:bg-white/20 transition-all border border-[#BFFF00]/50 text-[#BFFF00] shadow-[0_0_30px_rgba(191,255,0,0.2)]"
+          onClick={() => navigate('/demo-run')}
+          className="glass-pill px-10 py-4 text-xl font-bold rounded-full bg-white/10 hover:bg-white/20 transition-all border border-[#BFFF00]/50 text-[#BFFF00] shadow-[0_0_30px_rgba(191,255,0,0.2)] cursor-pointer"
         >
           Join the Protocol
         </motion.button>

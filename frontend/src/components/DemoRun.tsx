@@ -83,13 +83,23 @@ export const DemoRun: React.FC<DemoRunProps> = ({ onBack }) => {
   const truncateAddress = (addr: string) => addr ? `${addr.slice(0, 8)}...${addr.slice(-3)}` : '...';
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }} 
-      animate={{ opacity: 1 }} 
-      exit={{ opacity: 0 }}
-      className="min-h-screen w-full bg-[#0B0E14] text-white flex flex-col items-center pt-24 pb-12 px-6 relative overflow-hidden"
-    >
-      {/* Background Ambience */}
+    <>
+      {/* Back Navigation - Top Left */}
+      <button 
+        onClick={onBack}
+        className="fixed top-6 left-6 z-50 px-4 py-2 text-gray-500 hover:text-white transition-colors flex items-center gap-2 text-base font-mono"
+      >
+        <ChevronLeft className="w-5 h-5" />
+        Return to Architecture
+      </button>
+
+      <motion.div 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        exit={{ opacity: 0 }}
+        className="min-h-screen w-full bg-[#0B0E14] text-white flex flex-col items-center pt-24 pb-12 px-6 relative overflow-hidden"
+      >
+        {/* Background Ambience */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#0B0E14] to-[#161B22] -z-20" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#5546FF]/10 blur-[120px] rounded-full -z-10" />
 
@@ -287,15 +297,9 @@ export const DemoRun: React.FC<DemoRunProps> = ({ onBack }) => {
           <RefreshCw className="w-4 h-4" />
           Re-run Sequence
         </button>
-        <button 
-          onClick={onBack}
-          className="text-gray-500 hover:text-white transition-colors flex items-center gap-2 text-sm font-mono"
-        >
-          <ChevronLeft className="w-4 h-4" />
-          Return to Architecture
-        </button>
       </div>
 
-    </motion.div>
+      </motion.div>
+    </>
   );
 };

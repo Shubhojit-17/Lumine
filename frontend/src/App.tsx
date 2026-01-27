@@ -11,6 +11,7 @@ import { DemoRun } from './components/DemoRun';
 import { Docs } from './pages/Docs';
 
 function LandingPage() {
+  const navigate = useNavigate();
   return (
     <main className="w-full relative bg-[#0B0E14] text-white selection:bg-[#BFFF00] selection:text-black">
       {/* Grain Texture Overlay */}
@@ -29,7 +30,7 @@ function LandingPage() {
         </div>
       </nav>
 
-      <Hero />
+      <Hero onJoin={() => navigate('/demo-run')} />
       <Problem />
       <Solution />
       <Console />
